@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Recipe Manager</h1>
+
+    <section id="login-section">
+        <h2>Bitte anmelden</h2>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Benutzername" required>
+            <input type="password" id="password" placeholder="Passwort" required>
+            <button type="submit">Einloggen</button>
+        </form>
+        <p id="error-msg" style="color: red;"></p>
+    </section>
+
+    <section id="dashboard-section" class="hidden">
+        <h2>Einloggen erfolgreich</h2>
+        <button id="logout-btn">Ausloggen</button>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>

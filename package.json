@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/bheitmann/Webtechnologien_Projekt_Recipe_Manager/issues"
   },
-  "homepage": "https://github.com/bheitmann/Webtechnologien_Projekt_Recipe_Manager#readme"
+  "homepage": "https://github.com/bheitmann/Webtechnologien_Projekt_Recipe_Manager#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
