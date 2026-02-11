@@ -1,0 +1,1 @@
+Recipe Manager als Projekt im Modul Webtechnologien vom 3. Sem Informatik der PHWT.
