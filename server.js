@@ -1,6 +1,7 @@
 const express = require('express');  //Das Express Framework wird verwendet
 const app = express();
-const users = require('./database'); // Importiert die Datenbank
+const bcrypt = require('bcryptjs');
+const db = require('./database');
 
 // Statische Dateien aus dem Ordner "public" bereitstellen
 app.use(express.static('public'));
@@ -9,20 +10,37 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Login(-API)
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
-    // User in statischer "Datenbank" suchen
-    const user = users.find(u => u.username === username && u.password === password);
+    try {
+        // Suchen des Users in der SQLite Datenbank
+        const user = await db.get('SELECT * FROM users WHERE username = ?', [username]);
 
-    if (user) {
-        res.json({ success: true, message: "Login erfolgreich!" });
-    } else {
-        res.status(401).json({ success: false, message: "Falsche Daten!" });
+        if (!user) {
+            // User nicht gefunden
+            return res.status(401).json({ success: false, message: "Benutzer nicht gefunden!" });
+        }
+
+        // Passwort abgleichen
+        // Bcrypt nimmt das Klartext-Passwort und vergleicht es mit dem Hash in der DB
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (isMatch) {
+            // Erfolgreich eingeloggt
+            res.json({ success: true, message: "Login erfolgreich!", role: user.role });
+        } else {
+            // Falsches Passwort
+            res.status(401).json({ success: false, message: "Falsches Passwort!" });
+        }
+    } catch (err) {
+        // Falls die Datenbank abstürzt, fangen wir den Fehler ab
+        console.error("Login Fehler:", err);
+        res.status(500).json({ success: false, message: "Interner Serverfehler." });
     }
 });
 
 // Server starten
-app.listen(3000, () => {
-    console.log('Server läuft auf http://localhost:3000');
+db.initDb().then(() => {
+    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 });
