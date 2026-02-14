@@ -2,12 +2,20 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Recipe Manager</title>
+    <title>Rezept Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Recipe Manager</h1>
+    <nav id="nav-bar">
+        <div>
+            <a href="#" id="home-link">Rezept Manager</a>
+            <div id="show-user" class="hidden">Hallo, User</div>
+            <div id="logout-button-div" class="hidden">
+                <button id="logout-btn">Ausloggen</button>
+            </div>
+        </div>
+    </nav>
 
     <section id="login-section">
         <h2>Bitte anmelden</h2>
@@ -16,7 +24,7 @@
             <input type="password" id="password" placeholder="Passwort" required>
             <button type="submit">Einloggen</button>
         </form>
-        <p id="error-msg" style="color: red;"></p>
+        <p id="error-msg""></p>
     </section>
 
     <section id="user-management-section" class="hidden">
@@ -24,7 +32,6 @@
 
     <section id="dashboard-section" class="hidden">
         <h2>Einloggen erfolgreich</h2>
-        <button id="logout-btn">Ausloggen</button>
     </section>
 
     <section id="recipe_view-section" class="hidden">
