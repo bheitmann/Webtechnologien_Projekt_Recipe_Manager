@@ -1,5 +1,6 @@
 const express = require('express');  //Das Express Framework wird verwendet
 const app = express();
+const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const db = require('./database');
 
@@ -8,6 +9,13 @@ app.use(express.static('public'));
 
 // Erlaubt dem Server, JSON-Daten vom Frontend zu lesen
 app.use(express.json());
+
+app.use(session({
+    secret: 'simple-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { httpOnly: true, sameSite: 'lax' } // Basic security against XSS/CSRF
+}));
 
 // Login(-API)
 app.post('/login', async (req, res) => {
