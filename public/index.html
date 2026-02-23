@@ -24,14 +24,31 @@
             <input type="password" id="password" placeholder="Passwort" required>
             <button type="submit">Einloggen</button>
         </form>
-        <p id="error-msg""></p>
+        <p id="error-msg"></p>
     </section>
 
     <section id="user-management-section" class="hidden">
     </section>
 
     <section id="dashboard-section" class="hidden">
-        <h2>Einloggen erfolgreich</h2>
+        <div class="dashboard-header">
+            <h2>Meine Rezepte</h2>
+            <button id="create-btn">+ neues Rezept</button>
+        </div>
+        <!-- Such- und Filteroptionen -->
+        <div class="controls">
+            <input type="text" id="search-input" placeholder="Rezept oder Zutat suchen...">
+            <select id="filter-select">
+                <option value="">Alle Kategorien</option>
+                <option value="Vorspeise">Vorspeise</option>
+                <option value="Hauptgericht">Hauptgericht</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Veggie">Veggie</option>
+            </select>
+        </div>
+        <!-- Container für Rezeptliste -->
+        <div id="recipe-list">
+        </div>  
     </section>
 
     <section id="recipe_view-section" class="hidden">
