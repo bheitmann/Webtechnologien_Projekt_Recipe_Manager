@@ -1,8 +1,15 @@
 const loginForm = document.getElementById('login-form');
-const loginSection = document.getElementById('login-section');
-const dashboardSection = document.getElementById('dashboard-section');
 const errorMsg = document.getElementById('error-msg');
 const logoutBtn = document.getElementById('logout-btn');
+const logoutBtnDiv = document.getElementById('logout-button-div');
+const showUser= document.getElementById('show-user');
+const homeLink = document.getElementById('home-link');
+
+// Helferfunktion um zwischen Sections zu wechseln
+const show = (id) => {
+        document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+    };
 
 // Wartet darauf, dass das Login Formular abgeschickt wird
 loginForm.addEventListener('submit', async (e) => {
@@ -21,9 +28,13 @@ loginForm.addEventListener('submit', async (e) => {
     const result = await response.json();
 
     if (result.success) {
-        // Wenn Login okay: Login verstecken, Dashboard zeigen
-        loginSection.classList.add('hidden');
-        dashboardSection.classList.remove('hidden');
+        // Dashboard zeigen
+        show('dashboard-section');
+
+        //Navbar Elemente einblenden
+        logoutBtnDiv.classList.remove('hidden');
+        showUser.classList.remove('hidden');
+        showUser.textContent = `Hallo, ${username}`;
         errorMsg.textContent = '';
     } else {
         // Fehler anzeigen
@@ -32,10 +43,22 @@ loginForm.addEventListener('submit', async (e) => {
 });
 
 // Logout Logik
-logoutBtn.addEventListener('click', () => {
-    // Einfach Ansicht wieder tauschen
-    dashboardSection.classList.add('hidden');
-    loginSection.classList.remove('hidden');
+logoutBtn.addEventListener('click', async () => {
+    // Ansicht wieder tauschen
+    show('login-section');
+    logoutBtnDiv.classList.add('hidden');
+    showUser.classList.add('hidden');
     // Formular leeren
     loginForm.reset();
+});
+
+// Home Button "Rezept Manager" Logik
+homeLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    if (!logoutBtnDiv.classList.contains('hidden')) {
+        show('dashboard-section');
+    } else {
+        show('login-section');
+    }
 });

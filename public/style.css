@@ -14,3 +14,28 @@ section {
     margin-top: 20px;
     border-radius: 8px;
 }
+
+#nav-bar > div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#show-user {
+    margin-left: auto;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+#error-msg {
+    color: red;
+    margin-top: 10px;
+}
+
+#home-link {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
