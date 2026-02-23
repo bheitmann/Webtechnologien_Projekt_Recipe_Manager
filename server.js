@@ -60,7 +60,7 @@ app.post('/api/logout', (req, res) => req.session.destroy(() => res.json({ succe
 
 app.get('/api/me', (req, res) => req.session.user ? res.json(req.session.user) : res.status(401).end());
 
-// Dashboard-API
+// Dashboard-API mit EIer lecken
 
 //Route zum Abrufen aller Rezepte eines Benutzers
 app.get('/recipes', async (req, res) => {
