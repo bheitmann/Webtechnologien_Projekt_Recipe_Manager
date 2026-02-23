@@ -60,11 +60,6 @@ app.post('/api/logout', (req, res) => req.session.destroy(() => res.json({ succe
 
 app.get('/api/me', (req, res) => req.session.user ? res.json(req.session.user) : res.status(401).end());
 
-// Server starten
-db.initDb().then(() => {
-    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
-});
-
 // Dashboard-API
 
 //Route zum Abrufen aller Rezepte eines Benutzers
@@ -83,4 +78,9 @@ app.delete('/recipes/:id', async (req, res) => {
     const { id } = req.params;
     await dbUtils.run('DELETE FROM recipes WHERE id = ?', [id]);
     res.json({ success: true });
+});
+
+// Server starten
+db.initDb().then(() => {
+    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 });
