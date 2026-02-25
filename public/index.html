@@ -31,8 +31,32 @@
     </section>
 
     <section id="user-management-section" class="hidden">
-        <h1>User Management</h1>
-    </section>
+    <h2>Benutzerverwaltung</h2>
+
+    <div class="form-container">
+        <h3>Neuen Benutzer anlegen</h3>
+        <form id="add-user-form">
+            <input type="text" id="new-username" placeholder="Benutzername" required>
+            <input type="password" id="new-password" placeholder="Passwort" required>
+            
+            <select id="new-role">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+            
+            <button type="submit">Speichern</button>
+        </form>
+        <p id="user-management-msg"></p> 
+    </div>
+
+    <hr>
+
+    <div class="list-container">
+        <h3>Alle Benutzer</h3>
+        
+        <ul id="user-list"></ul>
+    </div>
+</section>
 
     <section id="dashboard-section" class="hidden">
         <div class="dashboard-header">

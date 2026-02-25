@@ -6,7 +6,7 @@ const db = require('../database');
 // Dashboard-API
 
 //Route zum Abrufen aller Rezepte eines Benutzers
-router.get('/all', async (req, res) => {
+router.get('/', async (req, res) => {
     try{
         const sql = 'SELECT * FROM recipes WHERE userId = ?'; 
         const recipes = await dbUtils.all(sql, [req.session.user.id]); //Nutzt Prepared Statements gegen SQL-Injection

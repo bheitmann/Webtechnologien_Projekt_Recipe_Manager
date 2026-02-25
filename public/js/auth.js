@@ -11,7 +11,7 @@ export async function checkAuth() {
         const response = await fetch('/auth/me');
         //Prüfen, ob der Server ein "OK" (Status 200) gibt
         if (response.ok) { 
-            User = await response.json();
+            const User = await response.json();
             setCurrentUser(User);
             show('dashboard-section');
             updateUI();

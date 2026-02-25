@@ -6,7 +6,7 @@ export const loadRecipes = async () => {
     list.innerHTML = '<p>Lade Rezepte...</p>';
 
     try{
-        const response = await fetch('/recipes/all', {
+        const response = await fetch('/recipes', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
         });

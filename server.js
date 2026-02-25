@@ -27,9 +27,9 @@ const adminOnly = (req, res, next) => (req.session.user?.role === 'admin') ? nex
 
 
 // Routes
-app.use('/users', userRoutes);
+app.use('/users', adminOnly, userRoutes);
 app.use('/auth', authRoutes);
-app.use('/recipes', recipeRoutes);
+app.use('/recipes', auth, recipeRoutes);
 
 
 
