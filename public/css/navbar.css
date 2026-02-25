@@ -1,0 +1,24 @@
+/*navbar.css*/
+#nav-bar > div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#home-link {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
+
+#user-management-button-div {
+    margin-left: 20px;
+}
+
+#show-user {
+    margin-left: auto;
+    margin-right: 20px;
+    font-weight: bold;
+}
