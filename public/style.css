@@ -21,6 +21,10 @@ section {
     width: 100%;
 }
 
+#user-management-button-div {
+    margin-left: 20px;
+}
+
 #show-user {
     margin-left: auto;
     margin-right: 20px;

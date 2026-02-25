@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtnDiv = document.getElementById('logout-button-div');
     const showUser= document.getElementById('show-user');
     const homeLink = document.getElementById('home-link');
+    const userMngmtBtn = document.getElementById('user-management-button');
+    const userMngmtBtnDiv = document.getElementById('user-management-button-div');
 
     // Helferfunktion um zwischen Sections zu wechseln
     const show = (id) => {
@@ -18,6 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
     const updateUI = () => {
+
+        if(currentUser.role === 'admin') {
+            userMngmtBtnDiv.classList.remove('hidden');
+        }
+
         logoutBtnDiv.classList.remove('hidden');
         showUser.classList.remove('hidden');
         showUser.textContent = `Hallo, ${currentUser.username}`;
@@ -63,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
 
         if (result.success) {
+            currentUser = result.user;
             // Dashboard zeigen
             show('dashboard-section');
             updateUI();
@@ -94,6 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             show('login-section');
         }
+    });
+
+    userMngmtBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        show('user-management-section');
     });
 
     // Rezepte ins Dashboard laden
