@@ -1,0 +1,9 @@
+/*user-mngmt.css*/
+#form-container {
+    margin-bottom: 30px;
+}
+
+#user-list {
+    list-style-type: none;
+    padding: 0;
+}
