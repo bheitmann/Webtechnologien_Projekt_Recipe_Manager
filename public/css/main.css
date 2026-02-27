@@ -1,0 +1,29 @@
+/*main.css*/
+@import url('./navbar.css');
+@import url('./dashboard.css');
+@import url('./user-mngmt.css');
+
+body {
+    font-family: sans-serif;
+    padding: 20px;
+}
+
+/* Diese Klasse versteckt Elemente */
+.hidden {
+    display: none;
+}
+
+section {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+
+#error-msg {
+    color: red;
+    margin-top: 10px;
+}
+
+

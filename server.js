@@ -1,9 +1,11 @@
+//server.js (backend)
 const express = require('express');  //Das Express Framework wird verwendet
 const app = express();
 const session = require('express-session');
-const bcrypt = require('bcryptjs');
 const db = require('./database');
-
+const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
+const recipeRoutes = require('./routes/recipes');
 
 // Middleware
 
@@ -25,60 +27,11 @@ const adminOnly = (req, res, next) => (req.session.user?.role === 'admin') ? nex
 
 
 // Routes
+app.use('/users', adminOnly, userRoutes);
+app.use('/auth', authRoutes);
+app.use('/recipes', auth, recipeRoutes);
 
-// Login(-API)
-app.post('/api/login', async (req, res) => {
-    const { username, password } = req.body;
 
-    try {
-        // Suchen des Users in der SQLite Datenbank
-        const user = await db.get('SELECT * FROM users WHERE username = ?', [username]);
-
-        if (!user) {
-            // User nicht gefunden
-            return res.status(401).json({ success: false, message: "Benutzer nicht gefunden!" });
-        }
-
-        // Passwort abgleichen
-        // Bcrypt nimmt das Klartext-Passwort und vergleicht es mit dem Hash in der DB
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (isMatch) { // Erfolgreich eingeloggt
-            req.session.user = { id: user.id, username: user.username, role: user.role };
-            res.json({ success: true, message: "Login erfolgreich!", user: req.session.user });
-        } else { // Falsches Passwort
-            res.status(401).json({ success: false, message: "Falsches Passwort!" });
-        }
-    } catch (err) {
-        // Falls die Datenbank abstürzt, wird der Fehler abgefangen
-        console.error("Login Fehler:", err);
-        res.status(500).json({ success: false, message: "Interner Serverfehler." });
-    }
-});
-
-app.post('/api/logout', (req, res) => req.session.destroy(() => res.json({ success: true })));
-
-app.get('/api/me', (req, res) => req.session.user ? res.json(req.session.user) : res.status(401).end());
-
-// Dashboard-API
-
-//Route zum Abrufen aller Rezepte eines Benutzers
-app.get('/recipes', async (req, res) => {
-    try{
-        const sql = 'SELECT * FROM recipes WHERE userId = ?'; 
-        const recipes = await dbUtils.all(sql, [req.session.userId]); // Nutzt Prepared Statements gegen SQL-Injection
-        res.json(recipes);
-    } catch (err) {
-        console.error("Fehler beim Abrufen der Rezepte:", err);
-        res.status(500).json({ success: false, message: "Interner Serverfehler." });
-    }
-});
-
-app.delete('/recipes/:id', async (req, res) => {
-    const { id } = req.params;
-    await dbUtils.run('DELETE FROM recipes WHERE id = ?', [id]);
-    res.json({ success: true });
-});
 
 // Server starten
 db.initDb().then(() => {
