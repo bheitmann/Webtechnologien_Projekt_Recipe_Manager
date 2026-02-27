@@ -3,13 +3,10 @@
 export const loadRecipes = async () => {
 
     const list = document.getElementById('recipe-list');
-    list.innerHTML = '<p>Lade Rezepte...</p>';
+    
 
     try{
-        const response = await fetch('/recipes', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-        });
+        const response = await fetch('/recipes');
         const recipes = await response.json();
 
         // Den Container leeren, um den Lade-Text zu entfernen
@@ -19,7 +16,7 @@ export const loadRecipes = async () => {
         if (recipes.length === 0) {
             // Nachricht anzeigen, wenn keine Rezepte vorhanden sind
             list.innerHTML = `
-                <div class="empty-state">
+                <div class="empty-recipes">
                     <p>Du hast noch keine Rezepte angelegt.</p>
                     <p>Klicke auf "+ neues Rezept", um zu starten!</p>
                 </div>
@@ -33,11 +30,24 @@ export const loadRecipes = async () => {
             article.innerHTML = `
                 <h3>${recipe.title}</h3>
                 <p>Kategorie: ${recipe.category}</p>
-                <button onclick="deleteRecipe(${recipe.id})">Löschen</button>
+                <button class="delete-btn" data-id="${recipe.id}">Löschen</button>
+                <button class="edit-btn" data-id="${recipe.id}">Bearbeiten</button>
             `;
         list.appendChild(article);
     });
+
     } catch (err) {
         list.innerHTML = `<p style="color:red;">Fehler beim Laden der Rezepte. Bitte versuche es später erneut.</p>`;
     }
 };
+
+document.getElementById('recipe-list').addEventListener('click', async (e) => {
+    const id = e.target.getAttribute('data-id');
+    
+    if (e.target.classList.contains('delete-btn')) {
+        if (confirm('Rezept wirklich löschen?')) {
+            const res = await fetch(`/recipes/${id}`, { method: 'DELETE' });
+            if (res.ok) loadRecipes(); // Nach Löschen Liste erneuern
+        }
+    }
+});

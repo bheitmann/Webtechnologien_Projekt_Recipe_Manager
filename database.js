@@ -53,6 +53,22 @@ async function initDb() { // Funktion um Datenbank zu starten
         await dbUtils.run('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', ['admin', hashedPw, 'admin']);
         await dbUtils.run('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', ['user', hashedPw, 'user']);
     }
+
+    //Default Rezept solange add button nicht funktioniert
+    const defaultRecipe = await dbUtils.get('SELECT * FROM recipes WHERE id = 1');
+    if (!defaultRecipe) {
+        await dbUtils.run(`
+            INSERT INTO recipes (userId, title, ingredients, steps, category) 
+            VALUES (?, ?, ?, ?, ?)`, 
+            [1, 'Spaghetti Bolognese', 'Spaghetti, Hackfleisch, Tomatensauce', '1. Spaghetti kochen\n2. Hackfleisch anbraten\n3. Tomatensauce hinzufügen\n4. Alles vermischen', 'Hauptgericht']            
+        );
+        await dbUtils.run(`
+            INSERT INTO recipes (userId, title, ingredients, steps, category) 
+            VALUES (?, ?, ?, ?, ?)`, 
+            [2, 'Spaghetti Bolognese', 'Spaghetti, Hackfleisch, Tomatensauce', '1. Spaghetti kochen\n2. Hackfleisch anbraten\n3. Tomatensauce hinzufügen\n4. Alles vermischen', 'Hauptgericht']            
+        );
+
+    }
 }  
 
 module.exports = {...dbUtils, initDb};

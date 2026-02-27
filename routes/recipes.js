@@ -7,9 +7,13 @@ const db = require('../database');
 
 //Route zum Abrufen aller Rezepte eines Benutzers
 router.get('/', async (req, res) => {
+    if (!req.session.user.id) {
+        return res.status(401).json({ error: "Nicht autorisiert" });
+    }
+
     try{
         const sql = 'SELECT * FROM recipes WHERE userId = ?'; 
-        const recipes = await dbUtils.all(sql, [req.session.user.id]); //Nutzt Prepared Statements gegen SQL-Injection
+        const recipes = await db.all(sql, [req.session.user.id]); //Nutzt Prepared Statements gegen SQL-Injection
         res.json(recipes);
     } catch (err) {
         console.error("Fehler beim Abrufen der Rezepte:", err);
@@ -17,9 +21,10 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-    await dbUtils.run('DELETE FROM recipes WHERE id = ?', [id]);
+router.delete('/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+    const sql = 'DELETE FROM recipes WHERE id = ? AND userId = ?';
+    await db.run(sql, [recipeId, req.session.user.id]);
     res.json({ success: true });
 });
 
