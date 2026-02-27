@@ -1,12 +1,17 @@
 //recipes.js (frontend)
 // Rezepte ins Dashboard laden
-export const loadRecipes = async () => {
+export const loadRecipes = async (category = '') => {
 
     const list = document.getElementById('recipe-list');
     
 
     try{
-        const response = await fetch('/recipes');
+        let url = '/recipes';
+        if (category) {
+            url += `?category=${encodeURIComponent(category)}`; 
+        }
+
+        const response = await fetch(url);
         const recipes = await response.json();
 
         // Den Container leeren, um den Lade-Text zu entfernen
@@ -17,8 +22,8 @@ export const loadRecipes = async () => {
             // Nachricht anzeigen, wenn keine Rezepte vorhanden sind
             list.innerHTML = `
                 <div class="empty-recipes">
-                    <p>Du hast noch keine Rezepte angelegt.</p>
-                    <p>Klicke auf "+ neues Rezept", um zu starten!</p>
+                    <p>Du hast noch keine Rezepte angelegt".</p>
+                    <p>Klicke auf "+ neues Rezept", um welche hinzuzufügen!</p>
                 </div>
             `;
             return;
@@ -51,3 +56,11 @@ document.getElementById('recipe-list').addEventListener('click', async (e) => {
         }
     }
 });
+
+const filterSelect = document.getElementById('filter-select');
+if (filterSelect) {
+    filterSelect.addEventListener('change', (event) => {
+        const selectedCategory = event.target.value; // Der Wert der gewählten <option>
+        loadRecipes(selectedCategory); // Rezepte mit Filter neu laden
+    });
+}

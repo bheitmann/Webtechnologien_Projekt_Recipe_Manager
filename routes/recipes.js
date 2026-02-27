@@ -11,9 +11,16 @@ router.get('/', async (req, res) => {
         return res.status(401).json({ error: "Nicht autorisiert" });
     }
 
+    const { category } = req.query; // Optionales Filterkriterium
+
     try{
-        const sql = 'SELECT * FROM recipes WHERE userId = ?'; 
-        const recipes = await db.all(sql, [req.session.user.id]); //Nutzt Prepared Statements gegen SQL-Injection
+        let sql = 'SELECT * FROM recipes WHERE userId = ?'; 
+        const params = [req.session.user.id];
+        if (category && category !== "") {
+            sql += ' AND category = ?';
+            params.push(category);
+        }
+        const recipes = await db.all(sql, params); //Nutzt Prepared Statements gegen SQL-Injection
         res.json(recipes);
     } catch (err) {
         console.error("Fehler beim Abrufen der Rezepte:", err);
