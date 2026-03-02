@@ -31,14 +31,29 @@ async function initDb() { // Funktion um Datenbank zu starten
         )
     `); // IF NOT EXISTS -> für den ersten Start der Datenbank jemals
 
-    // Rezept Tabelle
+    // Mengeneinheiten Tabelle
+    await dbUtils.run(`
+        CREATE TABLE IF NOT EXISTS units (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT UNIQUE NOT NULL
+        )
+    `);
+
+    // Zutaten Tabelle
+    await dbUtils.run(`
+        CREATE TABLE IF NOT EXISTS ingredients (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT UNIQUE NOT NULL
+        )
+    `);
+
+    // Rezept Tabelle (ohne ingredients - jetzt n:n über junction table)
     await dbUtils.run(`
         CREATE TABLE IF NOT EXISTS recipes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             userId INTEGER NOT NULL,
             title TEXT NOT NULL,
-            ingredients TEXT NOT NULL,
-            steps TEXT NOT NULL,
+            instructions TEXT NOT NULL,
             category TEXT,
             image TEXT,
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -46,6 +61,27 @@ async function initDb() { // Funktion um Datenbank zu starten
         )
     `);
 
+    // Junction-Tabelle für n:n Beziehung zwischen Rezepten und Zutaten
+    await dbUtils.run(`
+        CREATE TABLE IF NOT EXISTS recipe_ingredients (
+            recipeId INTEGER NOT NULL,
+            ingredientId INTEGER NOT NULL,
+            quantity REAL NOT NULL,
+            unitId INTEGER NOT NULL,
+            PRIMARY KEY (recipeId, ingredientId),
+            FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE,
+            FOREIGN KEY (ingredientId) REFERENCES ingredients(id),
+            FOREIGN KEY (unitId) REFERENCES units(id)
+        )
+    `);
+
+    // Standard-Mengeneinheiten einfügen
+    const defaultUnits = ['g', 'kg', 'ml', 'l', 'tsp', 'tbsp', 'cup', 'pcs'];
+    for (const unit of defaultUnits) {
+        await dbUtils.run('INSERT OR IGNORE INTO units (name) VALUES (?)', [unit]);
+    }
+    
+    
     // Deafult User erstellen, falls noch nicht vorhanden
     const admin = await dbUtils.get('SELECT * FROM users WHERE username = "admin"');
     if (!admin) {
