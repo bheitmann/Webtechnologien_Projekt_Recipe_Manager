@@ -7,21 +7,20 @@ const db = require('../database'); // exports run, get, all, etc.
 
 //Route zum Abrufen aller Rezepte eines Benutzers (mit Zutaten über JOIN)
 router.get('/', async (req, res) => {
+    if (!req.session.user.id) {
+        return res.status(401).json({ error: "Nicht autorisiert" });
+    }
+
+    const { category } = req.query; // Optionales Filterkriterium
+
     try{
-        const recipes = await db.all('SELECT * FROM recipes WHERE userId = ?', [req.session.user.id]);
-        
-        // Für jedes Rezept die Zutaten laden
-        for (const recipe of recipes) {
-            const ingredientsData = await db.all(`
-                SELECT i.name as ingredient, ri.quantity, u.name as unit
-                FROM recipe_ingredients ri
-                JOIN ingredients i ON ri.ingredientId = i.id
-                JOIN units u ON ri.unitId = u.id
-                WHERE ri.recipeId = ?
-            `, [recipe.id]);
-            recipe.ingredients = ingredientsData;
+        let sql = 'SELECT * FROM recipes WHERE userId = ?'; 
+        const params = [req.session.user.id];
+        if (category && category !== "") {
+            sql += ' AND category = ?';
+            params.push(category);
         }
-        
+        const recipes = await db.all(sql, params); //Nutzt Prepared Statements gegen SQL-Injection
         res.json(recipes);
     } catch (err) {
         console.error("Fehler beim Abrufen der Rezepte:", err);
@@ -75,9 +74,10 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-    await db.run('DELETE FROM recipes WHERE id = ?', [id]);
+router.delete('/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+    const sql = 'DELETE FROM recipes WHERE id = ? AND userId = ?';
+    await db.run(sql, [recipeId, req.session.user.id]);
     res.json({ success: true });
 });
 
