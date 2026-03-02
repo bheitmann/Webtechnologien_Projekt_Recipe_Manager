@@ -65,3 +65,40 @@ section {
     padding: 15px;
     border-radius: 8px;
 }
+
+
+
+#ingredients-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+#ingredients-list thead tr {
+    border-bottom: 2px solid #ddd;
+}
+
+#ingredients-list th {
+    text-align: left;
+    padding: 8px;
+    font-weight: bold;
+}
+
+#ingredients-list th:nth-child(2),
+#ingredients-list th:nth-child(3) {
+    text-align: center;
+    width: 120px;
+}
+
+.ingredient-row {
+    border-bottom: 1px solid #eee;
+}
+
+.ingredient-row td {
+    padding: 8px;
+}
+
+.ingredient-row td:nth-child(2),
+.ingredient-row td:nth-child(3) {
+    text-align: center;
+}

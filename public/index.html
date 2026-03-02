@@ -55,7 +55,62 @@
     </section>
 
     <section id="recipe_edit-section" class="hidden">
+        <div class="recipe_edit-header">
+        <h2 class="recipe-edit-title">Add Recipe</h2>
+        </div>
+        <div>
+            <label for="title" class="form-label">Recipe Name</label>
+            <input type="text" class="form-control" id="title" required>
+        </div>
+        <div>
+            <label for="ingredients" class="form-label">Ingredients</label>
+            <table id="ingredients-list" style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #ddd;">
+                        <th style="text-align: left; padding: 8px; font-weight: bold;">Zutat</th>
+                        <th style="text-align: center; padding: 8px; font-weight: bold; width: 100px;">Menge</th>
+                        <th style="text-align: center; padding: 8px; font-weight: bold; width: 120px;">Einheit</th>
+                    </tr>
+                </thead>
+                <tbody id="ingredients-tbody">
+                </tbody>
+            </table>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <input type="text" class="form-control" id="ingredients" placeholder="Zutat" required>
+                <input type="number" class="form-control" id="ingredient-quantity" placeholder="Menge" min="0" step="0.1" style="width: 100px;">
+                <select id="ingredient-unit" class="form-control" style="width: 120px;">
+                    <option value="g">Gramm (g)</option>
+                    <option value="kg">Kilogramm (kg)</option>
+                    <option value="ml">Milliliter (ml)</option>
+                    <option value="l">Liter (l)</option>
+                    <option value="tsp">Teelöffel (TL)</option>
+                    <option value="tbsp">Esslöffel (EL)</option>
+                    <option value="cup">Tasse</option>
+                    <option value="stk">Stück</option>
+                </select>
+            </div>
+            <button id="add-ingredient-btn">+ Add Ingredient</button>
+            <button id="clear-ingredients-btn">Clear Ingredients</button>
+        </div>
+        <div>
+            <label for="instructions" class="form-label">Instructions</label>
+            <textarea class="form-control" id="instructions" rows="5" required></textarea>
+        </div>
+        <div>
+            <label for="category" class="form-label">Category</label>
+            <select id="category" class="form-select">
+                <option value="Uncategorized">Uncategorized</option>
+                <option value="Veggie">Veggie</option>
+                <option value="Süß">Süß</option>
+                <option value="Hauptgerichte">Hauptgerichte</option>
+            </select>
+        </div>
+        <div>
+            <button id="save_recipe-btn">Rezept speichern</button>
+            <button id="cancel_edit-btn">Abbrechen</button>
+        </div>
     </section>
+
 
     <script src="app.js"></script>
 </body>

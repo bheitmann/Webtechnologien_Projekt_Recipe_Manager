@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtnDiv = document.getElementById('logout-button-div');
     const showUser= document.getElementById('show-user');
     const homeLink = document.getElementById('home-link');
+    const createBtn = document.getElementById('create-btn');
+    const cancelEditBtn = document.getElementById('cancel_edit-btn');
+    const addIngredientsBtn = document.getElementById('add-ingredient-btn');
+    const clearIngredientsBtn = document.getElementById('clear-ingredients-btn');
+    const ingredientsList = document.getElementById('ingredients-list');
 
     // Helferfunktion um zwischen Sections zu wechseln
     const show = (id) => {
@@ -138,6 +143,68 @@ document.addEventListener('DOMContentLoaded', () => {
             list.innerHTML = `<p style="color:red;">Fehler beim Laden der Rezepte. Bitte versuche es später erneut.</p>`;
         }
     };
+    
+    //Add Recipe Logik
+    
+    if (createBtn) {
+        createBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            show('recipe_edit-section');
+        });
+    }
+
+    if (cancelEditBtn) {
+        cancelEditBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Abbrechen geklickt');
+            show('dashboard-section');
+        });
+    }
+
+    // Zutatenverwaltung (Add / Clear)
+    const ingredientArray = [];
+    const ingredientsTbody = document.getElementById('ingredients-tbody');
+
+    if (addIngredientsBtn) {
+        addIngredientsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const ingredientInput = document.getElementById('ingredients');
+            const quantityInput = document.getElementById('ingredient-quantity');
+            const unitSelect = document.getElementById('ingredient-unit');
+            
+            if (!ingredientInput || !quantityInput || !unitSelect) return;
+            
+            const ingredient = ingredientInput.value.trim();
+            const quantity = quantityInput.value.trim();
+            const unit = unitSelect.value;
+            
+            if (!ingredient || !quantity) return; // Beide Felder müssen gefüllt sein
+
+            // UI: neue Tabellenzeile
+            const tr = document.createElement('tr');
+            tr.classList.add('ingredient-row');
+            tr.innerHTML = `
+                <td>${ingredient}</td>
+                <td>${quantity}</td>
+                <td>${unit}</td>
+            `;
+            ingredientsTbody.appendChild(tr);
+
+            // Array aktualisieren und Eingaben leeren
+            ingredientArray.push({ ingredient, quantity, unit });
+            ingredientInput.value = '';
+            quantityInput.value = '';
+        });
+    }
+
+    if (clearIngredientsBtn) {
+        clearIngredientsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Anzeige und Array leeren
+            ingredientsTbody.innerHTML = '';
+            ingredientArray.length = 0;
+        });
+    }
 
     //Initialisieren
     checkAuth();

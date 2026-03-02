@@ -82,5 +82,5 @@ app.delete('/recipes/:id', async (req, res) => {
 
 // Server starten
 db.initDb().then(() => {
-    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+    app.listen(3001, () => console.log('Server running on http://localhost:3000'));
 });
