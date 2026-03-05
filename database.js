@@ -91,7 +91,7 @@ async function initDb() { // Funktion um Datenbank zu starten
     }
 
     //Default Rezept solange add button nicht funktioniert
-    const defaultRecipe = await dbUtils.get('SELECT * FROM recipes WHERE id = 1');
+    const defaultRecipe = await dbUtils.get('SELECT * FROM recipes');
     if (!defaultRecipe) {
         await dbUtils.run(`
             INSERT INTO recipes (userId, title, ingredients, steps, category) 
