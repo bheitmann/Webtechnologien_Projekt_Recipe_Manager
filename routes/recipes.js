@@ -11,14 +11,23 @@ router.get('/', async (req, res) => {
         return res.status(401).json({ error: "Nicht autorisiert" });
     }
 
-    const { category } = req.query; // Optionales Filterkriterium
+    const { category, search } = req.query; // Optionales Filterkriterium
 
     try{
-        let sql = 'SELECT * FROM recipes WHERE userId = ?'; 
+        let sql = `SELECT DISTINCT r.* FROM recipes r
+            LEFT JOIN recipe_ingredients ri ON r.id = ri.recipeId
+            LEFT JOIN ingredients i ON ri.ingredientId = i.id
+            WHERE r.userId = ?
+        `; 
         const params = [req.session.user.id];
         if (category && category !== "") {
             sql += ' AND category = ?';
             params.push(category);
+        }
+         if (search && search.trim() !== "") {
+            sql += ' AND (r.title LIKE ? OR i.name LIKE ?)';
+            const searchVal = `%${search}%`; // Wildcards für Teilsuchen
+            params.push(searchVal, searchVal);
         }
         const recipes = await db.all(sql, params); //Nutzt Prepared Statements gegen SQL-Injection
         res.json(recipes);

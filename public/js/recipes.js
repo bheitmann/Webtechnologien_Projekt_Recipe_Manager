@@ -1,15 +1,12 @@
 //recipes.js (frontend)
 // Rezepte ins Dashboard laden
-export const loadRecipes = async (category = '') => {
+export const loadRecipes = async (category = '', search = '') => {
 
     const list = document.getElementById('recipe-list');
     
 
     try{
-        let url = '/recipes';
-        if (category) {
-            url += `?category=${encodeURIComponent(category)}`; 
-        }
+        let url = `/recipes?category=${encodeURIComponent(category)}&search=${encodeURIComponent(search)}`;
 
         const response = await fetch(url);
         const recipes = await response.json();
@@ -22,7 +19,7 @@ export const loadRecipes = async (category = '') => {
             // Nachricht anzeigen, wenn keine Rezepte vorhanden sind
             list.innerHTML = `
                 <div class="empty-recipes">
-                    <p>Du hast noch keine Rezepte angelegt".</p>
+                    <p>Keine Rezepte gefunden.</p>
                     <p>Klicke auf "+ neues Rezept", um welche hinzuzufügen!</p>
                 </div>
             `;
@@ -32,11 +29,19 @@ export const loadRecipes = async (category = '') => {
 
         recipes.forEach(recipe => {
             const article = document.createElement('article');
+
+            const imageSrc = recipe.image ? recipe.image : 'https://via.placeholder.com/300x200?text=Kein+Bild';
+
             article.innerHTML = `
-                <h3>${recipe.title}</h3>
-                <p>Kategorie: ${recipe.category}</p>
-                <button class="delete-btn" data-id="${recipe.id}">Löschen</button>
-                <button class="edit-btn" data-id="${recipe.id}">Bearbeiten</button>
+                <img src="${imageSrc}" alt="${recipe.title}" class = "recipe-image">
+                <div class="recipe-info">
+                    <h3>${recipe.title}</h3>
+                    <p>Kategorie: ${recipe.category}</p>
+                    <div class="recipe-actions">
+                        <button class="delete-btn" data-id="${recipe.id}">Löschen</button>
+                        <button class="edit-btn" data-id="${recipe.id}">Bearbeiten</button>
+                    </div>
+                </div>
             `;
         list.appendChild(article);
     });
@@ -58,9 +63,20 @@ document.getElementById('recipe-list').addEventListener('click', async (e) => {
 });
 
 const filterSelect = document.getElementById('filter-select');
+const searchInput = document.getElementById('search-input');
+// Funktion, um die aktuellen Werte beider Felder zu sammeln
+const triggerLoad = () => {
+    const category = filterSelect ? filterSelect.value : '';
+    const search = searchInput ? searchInput.value : '';
+    loadRecipes(category, search);
+};
+
+// Suche bei jeder Eingabe auslösen
+if (searchInput) {
+    searchInput.addEventListener('input', triggerLoad);
+}
+
+// Kategorie-Filter ebenfalls anpassen, damit Suche erhalten bleibt
 if (filterSelect) {
-    filterSelect.addEventListener('change', (event) => {
-        const selectedCategory = event.target.value; // Der Wert der gewählten <option>
-        loadRecipes(selectedCategory); // Rezepte mit Filter neu laden
-    });
+    filterSelect.addEventListener('change', triggerLoad);
 }
