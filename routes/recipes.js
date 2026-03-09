@@ -3,6 +3,26 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database'); // exports run, get, all, etc.
 
+async function getOrCreateIngredientId(ingredientName) {
+    const normalizedName = ingredientName.toLowerCase().trim();
+    let ingredient = await db.get(
+        'SELECT id FROM ingredients WHERE LOWER(name) = ?',
+        [normalizedName]
+    );
+
+    if (!ingredient) {
+        const result = await db.run('INSERT INTO ingredients (name) VALUES (?)', [normalizedName]);
+        ingredient = { id: result.id };
+    }
+
+    return ingredient.id;
+}
+
+async function getUnitId(unitName) {
+    const unitRow = await db.get('SELECT id FROM units WHERE name = ?', [unitName]);
+    return unitRow ? unitRow.id : 1;
+}
+
 // Dashboard-API
 
 //Route zum Abrufen aller Rezepte eines Benutzers (mit Zutaten über JOIN)
@@ -28,6 +48,35 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+
+    try {
+        const recipe = await db.get(
+            'SELECT id, title, instructions, category FROM recipes WHERE id = ? AND userId = ?',
+            [recipeId, req.session.user.id]
+        );
+
+        if (!recipe) {
+            return res.status(404).json({ success: false, message: 'Rezept nicht gefunden' });
+        }
+
+        const ingredients = await db.all(
+            `SELECT i.name AS ingredient, ri.quantity, u.name AS unit
+             FROM recipe_ingredients ri
+             JOIN ingredients i ON i.id = ri.ingredientId
+             JOIN units u ON u.id = ri.unitId
+             WHERE ri.recipeId = ?`,
+            [recipeId]
+        );
+
+        res.json({ ...recipe, ingredients });
+    } catch (err) {
+        console.error('Fehler beim Abrufen des Rezepts:', err);
+        res.status(500).json({ success: false, message: 'Interner Serverfehler.' });
+    }
+});
+
 // Create new recipe (n:n mit ingredients)
 router.post('/', async (req, res) => {
     try {
@@ -42,28 +91,12 @@ router.post('/', async (req, res) => {
         
         // 2. Für jede Zutat: in ingredients-Tabelle einfügen (falls nicht vorhanden) und Verknüpfung erstellen
         for (const item of ingredients) {
-            const ingredientName = item.ingredient.toLowerCase().trim();
-            
-            // Prüfen ob Zutat existiert
-            let ingredient = await db.get(
-                'SELECT id FROM ingredients WHERE LOWER(name) = ?',
-                [ingredientName]
-            );
-            
-            // Falls nicht, einfügen
-            if (!ingredient) {
-                const result = await db.run('INSERT INTO ingredients (name) VALUES (?)', [ingredientName]);
-                ingredient = { id: result.id };
-            }
-            
-            // unitId aus unit-Name holen
-            const unitRow = await db.get('SELECT id FROM units WHERE name = ?', [item.unit]);
-            const unitId = unitRow ? unitRow.id : 1;
-            
-            // Verknüpfung in recipe_ingredients erstellen
+            const ingredientId = await getOrCreateIngredientId(item.ingredient);
+            const unitId = await getUnitId(item.unit);
+
             await db.run(
                 'INSERT INTO recipe_ingredients (recipeId, ingredientId, quantity, unitId) VALUES (?, ?, ?, ?)',
-                [recipeId, ingredient.id, parseFloat(item.quantity), unitId]
+                [recipeId, ingredientId, parseFloat(item.quantity), unitId]
             );
         }
         
@@ -71,6 +104,53 @@ router.post('/', async (req, res) => {
     } catch (err) {
         console.error("Fehler beim Erstellen des Rezepts:", err);
         res.status(500).json({ success: false, message: "Fehler beim Speichern" });
+    }
+});
+
+router.put('/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+    const { title, ingredients, instructions, category } = req.body;
+
+    try {
+        const existingRecipe = await db.get(
+            'SELECT id FROM recipes WHERE id = ? AND userId = ?',
+            [recipeId, req.session.user.id]
+        );
+
+        if (!existingRecipe) {
+            return res.status(404).json({ success: false, message: 'Rezept nicht gefunden' });
+        }
+
+        await db.run('BEGIN TRANSACTION');
+
+        await db.run(
+            'UPDATE recipes SET title = ?, instructions = ?, category = ? WHERE id = ? AND userId = ?',
+            [title, instructions, category, recipeId, req.session.user.id]
+        );
+
+        await db.run('DELETE FROM recipe_ingredients WHERE recipeId = ?', [recipeId]);
+
+        for (const item of ingredients) {
+            const ingredientId = await getOrCreateIngredientId(item.ingredient);
+            const unitId = await getUnitId(item.unit);
+
+            await db.run(
+                'INSERT INTO recipe_ingredients (recipeId, ingredientId, quantity, unitId) VALUES (?, ?, ?, ?)',
+                [recipeId, ingredientId, parseFloat(item.quantity), unitId]
+            );
+        }
+
+        await db.run('COMMIT');
+        res.json({ success: true, id: Number(recipeId) });
+    } catch (err) {
+        try {
+            await db.run('ROLLBACK');
+        } catch (rollbackErr) {
+            console.error('Rollback fehlgeschlagen:', rollbackErr);
+        }
+
+        console.error('Fehler beim Aktualisieren des Rezepts:', err);
+        res.status(500).json({ success: false, message: 'Fehler beim Aktualisieren' });
     }
 });
 

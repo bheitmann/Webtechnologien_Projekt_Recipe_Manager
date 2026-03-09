@@ -2,6 +2,7 @@
 @import url('./navbar.css');
 @import url('./dashboard.css');
 @import url('./user-mngmt.css');
+@import url('./recipe-edit.css');
 
 body {
     font-family: sans-serif;

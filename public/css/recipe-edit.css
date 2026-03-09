@@ -1,0 +1,39 @@
+#recipe_edit-section #ingredients-list {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+}
+
+#recipe_edit-section #ingredients-list thead tr {
+	border-bottom: 2px solid #ddd;
+}
+
+#recipe_edit-section #ingredients-list th {
+	padding: 8px;
+	font-weight: bold;
+}
+
+#recipe_edit-section #ingredients-list th:first-child {
+	text-align: left;
+}
+
+#recipe_edit-section #ingredients-list th:nth-child(2),
+#recipe_edit-section #ingredients-list th:nth-child(3) {
+	text-align: center;
+}
+
+#recipe_edit-section #ingredients-list th:nth-child(2),
+#recipe_edit-section #ingredient-quantity {
+	width: 100px;
+}
+
+#recipe_edit-section #ingredients-list th:nth-child(3),
+#recipe_edit-section #ingredient-unit {
+	width: 120px;
+}
+
+#recipe_edit-section .ingredient-input-row {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 10px;
+}

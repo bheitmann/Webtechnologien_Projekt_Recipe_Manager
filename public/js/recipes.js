@@ -55,6 +55,10 @@ document.getElementById('recipe-list').addEventListener('click', async (e) => {
             if (res.ok) loadRecipes(); // Nach Löschen Liste erneuern
         }
     }
+
+    if (e.target.classList.contains('edit-btn')) {
+        document.dispatchEvent(new CustomEvent('recipe:edit', { detail: { id } }));
+    }
 });
 
 const filterSelect = document.getElementById('filter-select');
