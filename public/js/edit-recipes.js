@@ -21,6 +21,7 @@ export function edit_recipes_eventlisteners() {
     const saveRecipeBtn = document.getElementById('save_recipe-btn');
     const ingredientsTbody = document.getElementById('ingredients-tbody');
     const titleInput = document.getElementById('title');
+    const imageUrlInput = document.getElementById('image-url');
     const instructionsInput = document.getElementById('instructions');
     const categoryInput = document.getElementById('category');
     const editTitle = document.querySelector('.recipe-edit-title');
@@ -49,6 +50,7 @@ export function edit_recipes_eventlisteners() {
         renderIngredients();
 
         titleInput.value = '';
+        imageUrlInput.value = '';
         instructionsInput.value = '';
         categoryInput.value = 'Uncategorized';
 
@@ -63,6 +65,7 @@ export function edit_recipes_eventlisteners() {
     const fillRecipeForm = (recipe) => {
         editRecipeId = recipe.id;
         titleInput.value = recipe.title ?? '';
+        imageUrlInput.value = recipe.imageUrl ?? '';
         instructionsInput.value = recipe.instructions ?? '';
         categoryInput.value = recipe.category ?? 'Uncategorized';
 
@@ -83,10 +86,10 @@ export function edit_recipes_eventlisteners() {
             e.preventDefault();
             
             const title = titleInput.value;
+            const imageUrl = imageUrlInput.value;
             const instructions = instructionsInput.value;
             const category = categoryInput.value;
-
-            const resp = await saveRecipe({ title, ingredients: ingredientArray, instructions, category }, editRecipeId);
+            const resp = await saveRecipe({ title, imageUrl, ingredients: ingredientArray, instructions, category }, editRecipeId);
             if (resp.ok) {
                 resetRecipeForm();
                 show('dashboard-section');
