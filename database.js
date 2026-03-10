@@ -55,7 +55,7 @@ async function initDb() { // Funktion um Datenbank zu starten
             title TEXT NOT NULL,
             instructions TEXT NOT NULL,
             category TEXT,
-            imageUrl TEXT,
+            imageUrl TEXT NOT NULL,
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (userId) REFERENCES users(id)
         )

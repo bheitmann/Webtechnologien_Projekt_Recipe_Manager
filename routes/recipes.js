@@ -1,4 +1,4 @@
-//recipes.js (backend)
+﻿//recipes.js (backend)
 const express = require('express');
 const router = express.Router();
 const db = require('../database'); // exports run, get, all, etc.
@@ -25,7 +25,7 @@ async function getUnitId(unitName) {
 
 // Dashboard-API
 
-//Route zum Abrufen aller Rezepte eines Benutzers (mit Zutaten über JOIN)
+//Route zum Abrufen aller Rezepte eines Benutzers (mit Zutaten Ã¼ber JOIN)
 router.get('/', async (req, res) => {
     if (!req.session.user.id) {
         return res.status(401).json({ error: "Nicht autorisiert" });
@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
         }
          if (search && search.trim() !== "") {
             sql += ' AND (r.title LIKE ? OR i.name LIKE ?)';
-            const searchVal = `%${search}%`; // Wildcards für Teilsuchen
+            const searchVal = `%${search}%`; // Wildcards fÃ¼r Teilsuchen
             params.push(searchVal, searchVal);
         }
         const recipes = await db.all(sql, params); //Nutzt Prepared Statements gegen SQL-Injection
@@ -89,16 +89,16 @@ router.get('/:recipeId', async (req, res) => {
 // Create new recipe (n:n mit ingredients)
 router.post('/', async (req, res) => {
     try {
-        const { title, ingredients, instructions, category } = req.body;
+        const { title, ingredients, instructions, category, imageUrl } = req.body;
         
-        // 1. Rezept einfügen (ohne ingredients)
+        // 1. Rezept einfÃ¼gen (ohne ingredients)
         const recipeResult = await db.run(
-            'INSERT INTO recipes (userId, title, instructions, category) VALUES (?, ?, ?, ?)',
-            [req.session.user.id, title, instructions, category]
+            'INSERT INTO recipes (userId, title, instructions, category, imageUrl) VALUES (?, ?, ?, ?, ?)',
+            [req.session.user.id, title, instructions, category, imageUrl]
         );
         const recipeId = recipeResult.id;
         
-        // 2. Für jede Zutat: in ingredients-Tabelle einfügen (falls nicht vorhanden) und Verknüpfung erstellen
+        // 2. FÃ¼r jede Zutat: in ingredients-Tabelle einfÃ¼gen (falls nicht vorhanden) und VerknÃ¼pfung erstellen
         for (const item of ingredients) {
             const ingredientId = await getOrCreateIngredientId(item.ingredient);
             const unitId = await getUnitId(item.unit);
@@ -118,7 +118,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:recipeId', async (req, res) => {
     const { recipeId } = req.params;
-    const { title, ingredients, instructions, category } = req.body;
+    const { title, ingredients, instructions, category, imageUrl } = req.body;
 
     try {
         const existingRecipe = await db.get(
