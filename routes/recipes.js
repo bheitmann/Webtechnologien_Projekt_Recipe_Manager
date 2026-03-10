@@ -62,7 +62,7 @@ router.get('/:recipeId', async (req, res) => {
 
     try {
         const recipe = await db.get(
-            'SELECT id, title, instructions, category FROM recipes WHERE id = ? AND userId = ?',
+            'SELECT id, title, instructions, category, imageUrl FROM recipes WHERE id = ? AND userId = ?',
             [recipeId, req.session.user.id]
         );
 
@@ -133,8 +133,8 @@ router.put('/:recipeId', async (req, res) => {
         await db.run('BEGIN TRANSACTION');
 
         await db.run(
-            'UPDATE recipes SET title = ?, instructions = ?, category = ? WHERE id = ? AND userId = ?',
-            [title, instructions, category, recipeId, req.session.user.id]
+            'UPDATE recipes SET title = ?, instructions = ?, category = ?, imageUrl = ? WHERE id = ? AND userId = ?',
+            [title, instructions, category, imageUrl, recipeId, req.session.user.id]
         );
 
         await db.run('DELETE FROM recipe_ingredients WHERE recipeId = ?', [recipeId]);
