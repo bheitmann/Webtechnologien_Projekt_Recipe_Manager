@@ -24,3 +24,7 @@
     padding: 15px;
     border-radius: 8px;
 }
+
+.recipe-info {
+    padding: 15px; /* Innenabstand für den Textteil unter dem Bild */
+}
