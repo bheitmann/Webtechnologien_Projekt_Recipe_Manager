@@ -1,8 +1,8 @@
 #recipe_edit-section {
 	max-width: 900px;
 	margin: 20px auto 0;
-	background: #fcfcfe;
-	border: 1px solid #d7dce6;
+	background: var(--white);
+	border: 1px solid var(--grey);
 	border-radius: 12px;
 	box-shadow: 0 10px 24px rgba(26, 36, 64, 0.08);
 }
@@ -10,12 +10,12 @@
 #recipe_edit-section .recipe_edit-header {
 	margin-bottom: 20px;
 	padding-bottom: 14px;
-	border-bottom: 1px solid #e6e9f0;
+	border-bottom: 1px solid var(--grey);
 }
 
 #recipe_edit-section .recipe-edit-title {
 	margin: 0;
-	color: #1b2a4b;
+	color: var(--black);
 	letter-spacing: 0.2px;
 }
 
@@ -26,7 +26,7 @@
 #recipe_edit-section .form-label {
 	display: block;
 	margin-bottom: 6px;
-	color: #2c3550;
+	color: var(--black);
 	font-weight: 600;
 }
 
@@ -34,11 +34,11 @@
 #recipe_edit-section .form-select,
 #recipe_edit-section textarea {
 	width: 100%;
-	border: 1px solid #c5cde0;
+	border: 1px solid var(--grey);
 	border-radius: 8px;
 	padding: 10px 12px;
 	font-size: 0.98rem;
-	background: #fff;
+	background: var(--white);
 	transition: border-color 0.18s ease, box-shadow 0.18s ease;
 	box-sizing: border-box;
 }
@@ -46,7 +46,7 @@
 #recipe_edit-section .form-control:focus,
 #recipe_edit-section .form-select:focus,
 #recipe_edit-section textarea:focus {
-	border-color: #456ad8;
+	border-color: var(--blue);
 	box-shadow: 0 0 0 3px rgba(69, 106, 216, 0.16);
 	outline: none;
 }
@@ -55,23 +55,23 @@
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom: 12px;
-	border: 1px solid #d6dcea;
+	border: 1px solid var(--grey);
 	border-radius: 8px;
 	overflow: hidden;
 }
 
 #recipe_edit-section #ingredients-list thead {
-	background: #f1f4fa;
+	background: var(--white);
 }
 
 #recipe_edit-section #ingredients-list th,
 #recipe_edit-section #ingredients-list td {
 	padding: 10px 12px;
-	border-bottom: 1px solid #e7ebf4;
+	border-bottom: 1px solid var(--white);
 }
 
 #recipe_edit-section #ingredients-list th {
-	color: #2b3a5d;
+	color: var(--black);
 	font-weight: 600;
 }
 
@@ -107,26 +107,26 @@
 }
 
 #recipe_edit-section #add-ingredient-btn {
-	background: #2f7a52;
-	color: #fff;
+	background: var(--green);
+	color: var(--white);
 	margin-right: 8px;
 }
 
 #recipe_edit-section #clear-ingredients-btn {
-	background: #e7ebf4;
-	color: #2f3a53;
+	background: var(--white);
+	color: var(--black);
 }
 
 #recipe_edit-section #save_recipe-btn {
-	background: #2856c6;
-	color: #fff;
+	background: var(--blue);
+	color: var(--white);
 	margin-right: 8px;
 }
 
 #recipe_edit-section #cancel_edit-btn {
-	background: #f2f4f8;
-	color: #2f3a53;
-	border: 1px solid #d6dcea;
+	background: var(--white);
+	color: var(--black);
+	border: 1px solid var(--grey);
 }
 
 @media (max-width: 768px) {

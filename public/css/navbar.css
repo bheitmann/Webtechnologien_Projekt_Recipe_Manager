@@ -1,4 +1,13 @@
 /*navbar.css*/
+:root {
+    --black: #333;
+    --grey: #e7ebf4;
+    --white: #fff;
+    --blue: #2856c6; 
+    --green: #2f7a52; 
+    --red: #ff2a2a;  
+}
+
 #nav-bar > div {
     display: flex;
     align-items: center;
@@ -9,7 +18,7 @@
     font-weight: bold;
     font-size: 1.2rem;
     text-decoration: none;
-    color: #333;
+    color: var(--black);
     cursor: pointer;
 }
 
@@ -28,13 +37,13 @@
 }
 
 #logout-btn {
-    background: #e7ebf4;
-	color: #2f3a53;
+    background: var(--grey);
+	color: var(--black);
 }
 
 #user-management-button {
-    background: #2856c6;
-    color: #fff;
+    background: var(--blue);
+    color: var(--white);
 }
 
 #show-user {

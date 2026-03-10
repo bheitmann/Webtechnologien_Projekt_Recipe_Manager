@@ -38,7 +38,7 @@ export const loadRecipes = async (category = '', search = '') => {
                     <p>Kategorie: ${recipe.category}</p>
                     <div class="recipe-actions">
                         <button class="delete-btn" data-id="${recipe.id}">Löschen</button>
-                        <button class="edit-btn" data-id="${recipe.id}">Bearbeiten</button>
+                        <button class="dashboard-btn" data-id="${recipe.id}">Bearbeiten</button>
                     </div>
                 </div>
             `;

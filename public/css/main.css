@@ -16,14 +16,14 @@ body {
 }
 
 section {
-    border: 1px solid #ccc;
+    border: 1px solid var(--grey);
     padding: 20px;
     margin-top: 20px;
     border-radius: 8px;
 }
 
 #error-msg {
-    color: red;
+    color: var(--red);
     margin-top: 10px;
 }
 
@@ -38,11 +38,11 @@ input[type="number"],
 textarea,
 select {
     width: 100%;
-    border: 1px solid #c5cde0;
+    border: 1px solid var(--grey);
     border-radius: 8px;
     padding: 10px 12px;
     font-size: 0.98rem;
-    background: #fff;
+    background: var(--white);
     transition: border-color 0.18s ease, box-shadow 0.18s ease;
     box-sizing: border-box;
 }

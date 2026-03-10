@@ -45,9 +45,20 @@
     text-overflow: ellipsis;
 }
 
-.delete-btn, .edit-btn {
+.dashboard-btn {
     padding: 5px 10px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    background: var(--blue);
+	color: var(--white);
+}
+
+.delete-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: var(--red);
+	color: var(--white);
 }
