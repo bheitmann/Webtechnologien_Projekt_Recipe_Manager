@@ -66,7 +66,7 @@ async function loadUsers() {
                 
                 li.innerHTML = `
                     <span><strong>${user.username}</strong> (Rolle: ${user.role})</span>
-                    <button class="delete-user-btn" data-id="${user.id}" style="background-color: #ff4c4c; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">Löschen</button>
+                    <button class="delete-user-btn" data-id="${user.id}">Löschen</button>
                 `;
                 list.appendChild(li);
             });
