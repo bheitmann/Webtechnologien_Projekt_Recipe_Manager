@@ -7,3 +7,31 @@
     list-style-type: none;
     padding: 0;
 }
+
+.delete-user-btn {
+    background-color: #ff2a2a;
+    border: 0;
+	border-radius: 8px;
+	padding: 10px 14px;
+	font-size: 0.95rem;
+	cursor: pointer;
+	transition: transform 0.15s ease, opacity 0.15s ease;
+	color: #fff;
+}
+
+#save-user-btn {
+    background-color: #2f7a52;
+    border: 0;
+	border-radius: 8px;
+	padding: 10px 14px;
+	font-size: 0.95rem;
+	cursor: pointer;
+	transition: transform 0.15s ease, opacity 0.15s ease;
+	color: #fff;
+}
+
+#new-username,
+#new-password,
+#new-role {
+    margin-bottom: 5px;
+}

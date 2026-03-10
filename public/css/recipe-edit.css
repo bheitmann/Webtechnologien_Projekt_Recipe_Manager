@@ -129,11 +129,6 @@
 	border: 1px solid #d6dcea;
 }
 
-#recipe_edit-section button:hover {
-	transform: translateY(-1px);
-	opacity: 0.95;
-}
-
 @media (max-width: 768px) {
 	#recipe_edit-section {
 		margin-top: 14px;
