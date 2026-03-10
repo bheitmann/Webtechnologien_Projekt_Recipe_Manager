@@ -3,6 +3,7 @@
 @import url('./dashboard.css');
 @import url('./user-mngmt.css');
 @import url('./recipe-edit.css');
+@import url('./login.css');
 
 body {
     font-family: sans-serif;
@@ -21,10 +22,27 @@ section {
     border-radius: 8px;
 }
 
-
 #error-msg {
     color: red;
     margin-top: 10px;
 }
 
+button:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+}
 
+input[type="text"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    border: 1px solid #c5cde0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.98rem;
+    background: #fff;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    box-sizing: border-box;
+}
