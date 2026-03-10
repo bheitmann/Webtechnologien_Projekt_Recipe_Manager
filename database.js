@@ -55,11 +55,18 @@ async function initDb() { // Funktion um Datenbank zu starten
             title TEXT NOT NULL,
             instructions TEXT NOT NULL,
             category TEXT,
-            image TEXT,
+            imageUrl TEXT,
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (userId) REFERENCES users(id)
         )
     `);
+
+    // Bestehende Datenbank auf neue Spalte migrieren, falls sie fehlt
+    const recipeColumns = await dbUtils.all('PRAGMA table_info(recipes)');
+    const hasImageUrl = recipeColumns.some((column) => column.name === 'imageUrl');
+    if (!hasImageUrl) {
+        await dbUtils.run('ALTER TABLE recipes ADD COLUMN imageUrl TEXT');
+    }
 
     // Junction-Tabelle für n:n Beziehung zwischen Rezepten und Zutaten
     await dbUtils.run(`
@@ -90,7 +97,6 @@ async function initDb() { // Funktion um Datenbank zu starten
         await dbUtils.run('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', ['user', hashedPw, 'user']);
     }
 
-  
 }  
 
 module.exports = {...dbUtils, initDb};

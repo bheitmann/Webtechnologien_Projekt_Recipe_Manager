@@ -30,10 +30,7 @@ export const loadRecipes = async (category = '', search = '') => {
         recipes.forEach(recipe => {
             const article = document.createElement('article');
 
-            const imageSrc = recipe.image ? recipe.image : 'https://via.placeholder.com/300x200?text=Kein+Bild';
-
             article.innerHTML = `
-                <img src="${imageSrc}" alt="${recipe.title}" class = "recipe-image">
                 <div class="recipe-info">
                     <h3>${recipe.title}</h3>
                     <p>Kategorie: ${recipe.category}</p>
@@ -59,6 +56,10 @@ document.getElementById('recipe-list').addEventListener('click', async (e) => {
             const res = await fetch(`/recipes/${id}`, { method: 'DELETE' });
             if (res.ok) loadRecipes(); // Nach Löschen Liste erneuern
         }
+    }
+
+    if (e.target.classList.contains('edit-btn')) {
+        document.dispatchEvent(new CustomEvent('recipe:edit', { detail: { id } }));
     }
 });
 

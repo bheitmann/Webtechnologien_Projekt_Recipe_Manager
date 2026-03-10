@@ -35,5 +35,5 @@ app.use('/recipes', auth, recipeRoutes);
 
 // Server starten
 db.initDb().then(() => {
-    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+    app.listen(3003, () => console.log('Server running on http://localhost:3003'));
 });
