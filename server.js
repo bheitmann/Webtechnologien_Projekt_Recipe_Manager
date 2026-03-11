@@ -1,8 +1,13 @@
+//server.js (backend)
 const express = require('express');  //Das Express Framework wird verwendet
 const app = express();
 const session = require('express-session');
-const bcrypt = require('bcryptjs');
 const db = require('./database');
+const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
+const recipeRoutes = require('./routes/recipes');
+
+// Middleware
 
 // Statische Dateien aus dem Ordner "public" bereitstellen
 app.use(express.static('public'));
@@ -17,38 +22,18 @@ app.use(session({
     cookie: { httpOnly: true, sameSite: 'lax' } // Basic security against XSS/CSRF
 }));
 
-// Login(-API)
-app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
+const auth = (req, res, next) => req.session.user ? next() : res.status(401).json({ error: 'Unauthorized' });
+const adminOnly = (req, res, next) => (req.session.user?.role === 'admin') ? next() : res.status(403).json({ error: 'Forbidden' });
 
-    try {
-        // Suchen des Users in der SQLite Datenbank
-        const user = await db.get('SELECT * FROM users WHERE username = ?', [username]);
 
-        if (!user) {
-            // User nicht gefunden
-            return res.status(401).json({ success: false, message: "Benutzer nicht gefunden!" });
-        }
+// Routes
+app.use('/users', adminOnly, userRoutes);
+app.use('/auth', authRoutes);
+app.use('/recipes', auth, recipeRoutes);
 
-        // Passwort abgleichen
-        // Bcrypt nimmt das Klartext-Passwort und vergleicht es mit dem Hash in der DB
-        const isMatch = await bcrypt.compare(password, user.password);
 
-        if (isMatch) {
-            // Erfolgreich eingeloggt
-            res.json({ success: true, message: "Login erfolgreich!", role: user.role });
-        } else {
-            // Falsches Passwort
-            res.status(401).json({ success: false, message: "Falsches Passwort!" });
-        }
-    } catch (err) {
-        // Falls die Datenbank abstürzt, fangen wir den Fehler ab
-        console.error("Login Fehler:", err);
-        res.status(500).json({ success: false, message: "Interner Serverfehler." });
-    }
-});
 
 // Server starten
 db.initDb().then(() => {
-    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+    app.listen(3003, () => console.log('Server running on http://localhost:3003'));
 });

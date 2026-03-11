@@ -1,0 +1,15 @@
+#login-btn {
+    border: 0;
+	border-radius: 8px;
+	padding: 10px 14px;
+	font-size: 0.95rem;
+	cursor: pointer;
+	transition: transform 0.15s ease, opacity 0.15s ease;
+    background: var(--grey);
+	color: var(--black);
+}
+
+#username,
+#password {
+    margin-bottom: 5px;
+}
