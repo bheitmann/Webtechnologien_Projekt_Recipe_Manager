@@ -35,6 +35,7 @@ export const loadRecipes = async (category = '', search = '') => {
                     <h3>${recipe.title}</h3>
                     <p>Kategorie: ${recipe.category}</p>
                     <div class="recipe-actions">
+                        <button class="view-btn" data-id="${recipe.id}">Ansehen</button>
                         <button class="delete-btn" data-id="${recipe.id}">Löschen</button>
                         <button class="edit-btn" data-id="${recipe.id}">Bearbeiten</button>
                     </div>
@@ -50,7 +51,11 @@ export const loadRecipes = async (category = '', search = '') => {
 
 document.getElementById('recipe-list').addEventListener('click', async (e) => {
     const id = e.target.getAttribute('data-id');
-    
+
+    if (e.target.classList.contains('view-btn')) {
+        document.dispatchEvent(new CustomEvent('recipe:view', { detail: { id } }));
+    }
+
     if (e.target.classList.contains('delete-btn')) {
         if (confirm('Rezept wirklich löschen?')) {
             const res = await fetch(`/recipes/${id}`, { method: 'DELETE' });
