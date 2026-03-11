@@ -84,18 +84,18 @@
 
     <section id="recipe_edit-section" class="hidden">
         <div class="recipe_edit-header">
-        <h2 class="recipe-edit-title">Add Recipe</h2>
+        <h2 class="recipe-edit-title">Rezept hinzufügen</h2>
         </div>
         <div>
-            <label for="title" class="form-label">Recipe Name</label>
+            <label for="title" class="form-label">Rezeptname</label>
             <input type="text" class="form-control" id="title" required>
         </div>
         <div>
-            <label for="image-url" class="form-label">Image URL</label>
+            <label for="image-url" class="form-label">Bild Adresse</label>
             <input type="text" class="form-control" id="image-url" placeholder="https://example.com/image.jpg">
         </div>
         <div>
-            <label for="ingredients" class="form-label">Ingredients</label>
+            <label for="ingredients" class="form-label">Zutaten</label>
             <table id="ingredients-list">
                 <thead>
                     <tr>
@@ -121,17 +121,16 @@
                     <option value="stk">Stück</option>
                 </select>
             </div>
-            <button id="add-ingredient-btn">+ Add Ingredient</button>
-            <button id="clear-ingredients-btn">Clear Ingredients</button>
+            <button id="add-ingredient-btn">+ Zutat hinzufügen</button>
+            <button id="clear-ingredients-btn">Zutaten löschen</button>
         </div>
         <div>
-            <label for="instructions" class="form-label">Instructions</label>
+            <label for="instructions" class="form-label">Anleitung</label>
             <textarea class="form-control" id="instructions" rows="5" required></textarea>
         </div>
         <div>
-            <label for="category" class="form-label">Category</label>
+            <label for="category" class="form-label">Kategorie</label>
             <select id="category" class="form-select">
-                <option value="keine Kategorie">Uncategorized</option>
                 <option value="Veggie">Veggie</option>
                 <option value="Dessert">Dessert</option>
                 <option value="Hauptgericht">Hauptgericht</option>

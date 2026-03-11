@@ -140,10 +140,6 @@
 		padding: 16px;
 	}
 
-	#recipe_edit-section .ingredient-input-row {
-		grid-template-columns: 1fr;
-	}
-
 	#recipe_edit-section #add-ingredient-btn,
 	#recipe_edit-section #clear-ingredients-btn,
 	#recipe_edit-section #save_recipe-btn,
@@ -157,5 +153,9 @@
 		display: block;
 		overflow-x: auto;
 		white-space: nowrap;
+	}
+
+	#recipe_edit-section .ingredient-input-row {
+		grid-template-columns: 1fr;
 	}
 }

@@ -55,7 +55,7 @@ export function edit_recipes_eventlisteners() {
         categoryInput.value = 'Uncategorized';
 
         if (editTitle) {
-            editTitle.textContent = 'Add Recipe';
+            editTitle.textContent = 'Rezept erstellen';
         }
         if (saveRecipeBtn) {
             saveRecipeBtn.textContent = 'Rezept speichern';
@@ -74,7 +74,7 @@ export function edit_recipes_eventlisteners() {
         renderIngredients();
 
         if (editTitle) {
-            editTitle.textContent = 'Edit Recipe';
+            editTitle.textContent = 'Rezept bearbeiten';
         }
         if (saveRecipeBtn) {
             saveRecipeBtn.textContent = 'Rezept aktualisieren';
