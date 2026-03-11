@@ -1,4 +1,13 @@
 /*navbar.css*/
+:root {
+    --black: #333;
+    --grey: #e7ebf4;
+    --white: #fff;
+    --blue: #2856c6; 
+    --green: #2f7a52; 
+    --red: #ff2a2a;  
+}
+
 #nav-bar > div {
     display: flex;
     align-items: center;
@@ -9,12 +18,32 @@
     font-weight: bold;
     font-size: 1.2rem;
     text-decoration: none;
-    color: #333;
+    color: var(--black);
     cursor: pointer;
 }
 
 #user-management-button-div {
     margin-left: 20px;
+}
+
+#user-management-button,
+#logout-btn {
+    border: 0;
+	border-radius: 8px;
+	padding: 10px 14px;
+	font-size: 0.95rem;
+	cursor: pointer;
+	transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+#logout-btn {
+    background: var(--grey);
+	color: var(--black);
+}
+
+#user-management-button {
+    background: var(--blue);
+    color: var(--white);
 }
 
 #show-user {

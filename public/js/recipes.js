@@ -30,10 +30,11 @@ export const loadRecipes = async (category = '', search = '') => {
         recipes.forEach(recipe => {
             const article = document.createElement('article');
             const imageSrc = recipe.imageUrl ? recipe.imageUrl : 'https://th.bing.com/th/id/OIP.hYV5XwAJ7YXK0cb2zPOGyAHaHa?w=180&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3';
+            const title = recipe.title ? recipe.title : 'Kein Titel';
             article.innerHTML = `
                 <div class="recipe-info">
-                    <img src="${imageSrc}" alt="${recipe.title}" class="recipe-image">
-                    <h3>${recipe.title}</h3>
+                    <img src="${imageSrc}" class="recipe-image">
+                    <h3 class="recipe-title">${title}</h3>
                     <p>Kategorie: ${recipe.category}</p>
                     <div class="recipe-actions">
                         <button class="delete-btn" data-id="${recipe.id}">Löschen</button>

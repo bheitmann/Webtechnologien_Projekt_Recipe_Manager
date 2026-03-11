@@ -11,7 +11,7 @@
         <div>
             <a href="#" id="home-link">Rezept Manager</a>
             <div id="user-management-button-div" class="hidden">
-                <button id="user-management-button">User Management</button>
+                <button id="user-management-button">Benutzerverwaltung</button>
             </div>
             <div id="show-user" class="hidden">Hallo, User</div>
             <div id="logout-button-div" class="hidden">
@@ -25,7 +25,7 @@
         <form id="login-form">
             <input type="text" id="username" placeholder="Benutzername" required>
             <input type="password" id="password" placeholder="Passwort" required>
-            <button type="submit">Einloggen</button>
+            <button type="submit" id="login-btn">Einloggen</button>
         </form>
         <p id="error-msg"></p>
     </section>
@@ -44,7 +44,7 @@
                 <option value="admin">Admin</option>
             </select>
             
-            <button type="submit">Speichern</button>
+            <button type="submit" id="save-user-btn">Speichern</button>
         </form>
         <p id="user-management-msg"></p> 
     </div>
@@ -61,7 +61,7 @@
     <section id="dashboard-section" class="hidden">
         <div class="dashboard-header">
             <h2>Meine Rezepte</h2>
-            <button id="create-btn">+ neues Rezept</button>
+            <button class="dashboard-btn" id="create-btn">+ neues Rezept</button>
         </div>
         <!-- Such- und Filteroptionen -->
         <div class="controls">
