@@ -6,6 +6,15 @@
 @import url('./recipe-view.css');
 @import url('./login.css');
 
+:root {
+    --black: #333;
+    --grey: #e7ebf4;
+    --white: #fff;
+    --blue: #2856c6; 
+    --green: #2f7a52; 
+    --red: #ff2a2a;  
+}
+
 body {
     font-family: sans-serif;
     padding: 20px;

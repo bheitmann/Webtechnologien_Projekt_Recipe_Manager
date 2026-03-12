@@ -1,12 +1,4 @@
 /*navbar.css*/
-:root {
-    --black: #333;
-    --grey: #e7ebf4;
-    --white: #fff;
-    --blue: #2856c6; 
-    --green: #2f7a52; 
-    --red: #ff2a2a;  
-}
 
 #nav-bar > div {
     display: flex;
