@@ -54,8 +54,8 @@
 
 .btn-back {
     padding: 8px 15px;
-    background-color: #333;
-    color: white;
+    background-color: var(--grey);
+    color: var(--black);
     border: none;
     border-radius: 4px;
     cursor: pointer;
