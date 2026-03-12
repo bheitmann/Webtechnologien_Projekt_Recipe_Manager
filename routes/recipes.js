@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
         }
          if (search && search.trim() !== "") {
             sql += ' AND (r.title LIKE ? OR i.name LIKE ?)';
-            const searchVal = `%${search}%`; // Wildcards fÃ¼r Teilsuchen
+            const searchVal = `%${search}%`; 
             params.push(searchVal, searchVal);
         }
         const recipes = await db.all(sql, params); //Nutzt Prepared Statements gegen SQL-Injection

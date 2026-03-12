@@ -23,6 +23,7 @@
     border: 1px solid #ccc;
     padding: 15px;
     border-radius: 8px;
+    box-shadow: 0 10px 24px rgba(26, 36, 64, 0.08);
 }
 
 .recipe-info {
@@ -45,13 +46,14 @@
     text-overflow: ellipsis;
 }
 
-.dashboard-btn, .edit-btn {
+.dashboard-btn, .edit-btn, .view-btn{
     padding: 5px 10px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     background: var(--blue);
 	color: var(--white);
+    margin: 5px;
 }
 
 .delete-btn {
