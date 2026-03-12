@@ -16,10 +16,8 @@ export const loadRecipes = async () => {
         if (!response.ok) throw new Error("Fehler beim Laden");
         const recipes = await response.json();
 
-        // Den Container leeren, um den Lade-Text zu entfernen
         list.innerHTML = ''; 
 
-        // Prüfung auf leeren Zustand
         if (recipes.length === 0) {
             // Nachricht anzeigen, wenn keine Rezepte vorhanden sind
             list.innerHTML = `
@@ -93,7 +91,7 @@ document.getElementById('recipe-list').addEventListener('click', async (e) => {
     if (e.target.classList.contains('delete-btn')) {
         if (confirm('Rezept wirklich löschen?')) {
             const res = await fetch(`/recipes/${id}`, { method: 'DELETE' });
-            if (res.ok) loadRecipes(); // Nach Löschen Liste erneuern
+            if (res.ok) loadRecipes(); 
         }
     }
 
@@ -103,12 +101,11 @@ document.getElementById('recipe-list').addEventListener('click', async (e) => {
 });
 
 
-// Suche bei jeder Eingabe auslösen
+
 if (searchInput) {
     searchInput.addEventListener('input', () => loadRecipes());
 }
 
-// Kategorie-Filter ebenfalls anpassen, damit Suche erhalten bleibt
 if (filterSelect) {
     filterSelect.addEventListener('change', () => loadRecipes());
 }
