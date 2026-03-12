@@ -134,12 +134,6 @@
 	border: 1px solid var(--grey);
 }
 
-@media (max-width: 768px) {
-	#recipe_edit-section {
-		margin-top: 14px;
-		padding: 16px;
-	}
-
 	#recipe_edit-section #add-ingredient-btn,
 	#recipe_edit-section #clear-ingredients-btn,
 	#recipe_edit-section #save_recipe-btn,
@@ -158,4 +152,3 @@
 	#recipe_edit-section .ingredient-input-row {
 		grid-template-columns: 1fr;
 	}
-}
