@@ -132,7 +132,7 @@
             </table>
             <div class="ingredient-input-row">
                 <input type="text" class="form-control" id="ingredients" placeholder="Zutat" required>
-                <input type="number" class="form-control" id="ingredient-quantity" placeholder="Menge" min="0" step="0.1">
+                <input type="text" class="form-control" id="ingredient-quantity" placeholder="Menge" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
                 <select id="ingredient-unit" class="form-control">
                     <option value="g">Gramm (g)</option>
                     <option value="kg">Kilogramm (kg)</option>

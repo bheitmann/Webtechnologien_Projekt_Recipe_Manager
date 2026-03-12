@@ -25,6 +25,9 @@ export function edit_recipes_eventlisteners() {
     const instructionsInput = document.getElementById('instructions');
     const categoryInput = document.getElementById('category');
     const editTitle = document.querySelector('.recipe-edit-title');
+    const ingredientInput = document.getElementById('ingredients');
+    const quantityInput = document.getElementById('ingredient-quantity');
+    const unitSelect = document.getElementById('ingredient-unit');
 
     const ingredientArray = [];
     let editRecipeId = null;
@@ -44,6 +47,18 @@ export function edit_recipes_eventlisteners() {
         });
     };
 
+    const markQuantityAsInvalid = () => {
+        if (quantityInput) {
+            quantityInput.classList.add('input-error');
+        }
+    };
+
+    const clearQuantityInvalidState = () => {
+        if (quantityInput) {
+            quantityInput.classList.remove('input-error');
+        }
+    };
+
     const resetRecipeForm = () => {
         editRecipeId = null;
         ingredientArray.length = 0;
@@ -59,6 +74,19 @@ export function edit_recipes_eventlisteners() {
         }
         if (saveRecipeBtn) {
             saveRecipeBtn.textContent = 'Rezept speichern';
+        }
+
+        if (ingredientInput) {
+            ingredientInput.value = '';
+        }
+
+        if (quantityInput) {
+            quantityInput.value = '';
+            clearQuantityInvalidState();
+        }
+
+        if (unitSelect) {
+            unitSelect.value = 'g';
         }
     };
 
@@ -78,6 +106,19 @@ export function edit_recipes_eventlisteners() {
         }
         if (saveRecipeBtn) {
             saveRecipeBtn.textContent = 'Rezept aktualisieren';
+        }
+
+        if (ingredientInput) {
+            ingredientInput.value = '';
+        }
+
+        if (quantityInput) {
+            quantityInput.value = '';
+            clearQuantityInvalidState();
+        }
+
+        if (unitSelect) {
+            unitSelect.value = 'g';
         }
     };
 
@@ -139,26 +180,41 @@ export function edit_recipes_eventlisteners() {
 
     // Zutatenverwaltung (Add / Clear)
 
+    if (quantityInput) {
+        quantityInput.addEventListener('input', () => {
+            // Keep only digits (0-9) in the quantity field.
+            quantityInput.value = quantityInput.value.replace(/\D/g, '');
+            if (quantityInput.value.trim() !== '') {
+                clearQuantityInvalidState();
+            }
+        });
+    }
+
     if (addIngredientsBtn) {
         addIngredientsBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            const ingredientInput = document.getElementById('ingredients');
-            const quantityInput = document.getElementById('ingredient-quantity');
-            const unitSelect = document.getElementById('ingredient-unit');
-            
+
             if (!ingredientInput || !quantityInput || !unitSelect) return;
             
             const ingredient = ingredientInput.value.trim();
             const quantity = quantityInput.value.trim();
             const unit = unitSelect.value;
-            
-            if (!ingredient || !quantity) return; // Beide Felder müssen gefüllt sein
+
+            if (!quantity) {
+                markQuantityAsInvalid();
+                return;
+            }
+
+            if (!ingredient) return;
+
+            clearQuantityInvalidState();
 
             ingredientArray.push({ ingredient, quantity, unit });
             renderIngredients();
 
             ingredientInput.value = '';
             quantityInput.value = '';
+            clearQuantityInvalidState();
         });
     }
 

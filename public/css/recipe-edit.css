@@ -51,6 +51,11 @@
 	outline: none;
 }
 
+#recipe_edit-section .form-control.input-error {
+	border-color: #d32f2f;
+	box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.16);
+}
+
 #recipe_edit-section #ingredients-list {
 	width: 100%;
 	border-collapse: collapse;
