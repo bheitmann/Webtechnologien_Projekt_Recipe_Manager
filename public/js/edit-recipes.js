@@ -288,6 +288,15 @@ export function edit_recipes_eventlisteners() {
                 return;
             }
 
+            const ingredientAlreadyExists = ingredientArray.some((item) =>
+                item.ingredient?.trim().toLowerCase() === ingredient.toLowerCase()
+            );
+
+            if (ingredientAlreadyExists) {
+                markIngredientAsInvalid();
+                return;
+            }
+
             clearIngredientInvalidState();
             clearQuantityInvalidState();
 
