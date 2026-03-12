@@ -80,6 +80,29 @@
     </section>
 
     <section id="recipe_view-section" class="hidden">
+        <button id="btn-back-to-dashboard" class="btn-back">← Zurück zur Übersicht</button>
+        
+        <div class="recipe-card detail-card">
+            <div class="recipe-header">
+                <h2 id="view-title">Lade...</h2>
+                <div class="recipe-meta">
+                    Kategorie: <span id="view-category">-</span>
+                </div>
+                <img id="view-image" class="recipe-img hidden" src="" alt="Rezeptbild">
+            </div>
+
+            <div class="content-grid">
+                <div class="ingredients-section">
+                    <h3>Zutaten</h3>
+                    <ul id="view-ingredients"></ul>
+                </div>
+                
+                <div class="instructions-section">
+                    <h3>Zubereitung</h3>
+                    <p id="view-instructions" class="instructions-text"></p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section id="recipe_edit-section" class="hidden">

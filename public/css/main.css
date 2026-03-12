@@ -3,6 +3,7 @@
 @import url('./dashboard.css');
 @import url('./user-mngmt.css');
 @import url('./recipe-edit.css');
+@import url('./recipe-view.css');
 @import url('./login.css');
 
 body {
