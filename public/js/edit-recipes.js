@@ -53,9 +53,45 @@ export function edit_recipes_eventlisteners() {
         }
     };
 
+    const markTitleAsInvalid = () => {
+        if (titleInput) {
+            titleInput.classList.add('input-error');
+        }
+    };
+
+    const markIngredientAsInvalid = () => {
+        if (ingredientInput) {
+            ingredientInput.classList.add('input-error');
+        }
+    };
+
+    const markInstructionsAsInvalid = () => {
+        if (instructionsInput) {
+            instructionsInput.classList.add('input-error');
+        }
+    };
+
     const clearQuantityInvalidState = () => {
         if (quantityInput) {
             quantityInput.classList.remove('input-error');
+        }
+    };
+
+    const clearTitleInvalidState = () => {
+        if (titleInput) {
+            titleInput.classList.remove('input-error');
+        }
+    };
+
+    const clearIngredientInvalidState = () => {
+        if (ingredientInput) {
+            ingredientInput.classList.remove('input-error');
+        }
+    };
+
+    const clearInstructionsInvalidState = () => {
+        if (instructionsInput) {
+            instructionsInput.classList.remove('input-error');
         }
     };
 
@@ -65,8 +101,10 @@ export function edit_recipes_eventlisteners() {
         renderIngredients();
 
         titleInput.value = '';
+        clearTitleInvalidState();
         imageUrlInput.value = '';
         instructionsInput.value = '';
+        clearInstructionsInvalidState();
         categoryInput.value = 'Uncategorized';
 
         if (editTitle) {
@@ -78,6 +116,7 @@ export function edit_recipes_eventlisteners() {
 
         if (ingredientInput) {
             ingredientInput.value = '';
+            clearIngredientInvalidState();
         }
 
         if (quantityInput) {
@@ -93,8 +132,10 @@ export function edit_recipes_eventlisteners() {
     const fillRecipeForm = (recipe) => {
         editRecipeId = recipe.id;
         titleInput.value = recipe.title ?? '';
+        clearTitleInvalidState();
         imageUrlInput.value = recipe.imageUrl ?? '';
         instructionsInput.value = recipe.instructions ?? '';
+        clearInstructionsInvalidState();
         categoryInput.value = recipe.category ?? 'Uncategorized';
 
         ingredientArray.length = 0;
@@ -110,6 +151,7 @@ export function edit_recipes_eventlisteners() {
 
         if (ingredientInput) {
             ingredientInput.value = '';
+            clearIngredientInvalidState();
         }
 
         if (quantityInput) {
@@ -126,9 +168,21 @@ export function edit_recipes_eventlisteners() {
         saveRecipeBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             
-            const title = titleInput.value;
+            const title = titleInput.value.trim();
+            if (!title) {
+                markTitleAsInvalid();
+                return;
+            }
+
+            clearTitleInvalidState();
             const imageUrl = imageUrlInput.value;
-            const instructions = instructionsInput.value;
+            const instructions = instructionsInput.value.trim();
+            if (!instructions) {
+                markInstructionsAsInvalid();
+                return;
+            }
+
+            clearInstructionsInvalidState();
             const category = categoryInput.value;
             const resp = await saveRecipe({ title, imageUrl, ingredients: ingredientArray, instructions, category }, editRecipeId);
             if (resp.ok) {
@@ -190,6 +244,30 @@ export function edit_recipes_eventlisteners() {
         });
     }
 
+    if (titleInput) {
+        titleInput.addEventListener('input', () => {
+            if (titleInput.value.trim() !== '') {
+                clearTitleInvalidState();
+            }
+        });
+    }
+
+    if (instructionsInput) {
+        instructionsInput.addEventListener('input', () => {
+            if (instructionsInput.value.trim() !== '') {
+                clearInstructionsInvalidState();
+            }
+        });
+    }
+
+    if (ingredientInput) {
+        ingredientInput.addEventListener('input', () => {
+            if (ingredientInput.value.trim() !== '') {
+                clearIngredientInvalidState();
+            }
+        });
+    }
+
     if (addIngredientsBtn) {
         addIngredientsBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -205,8 +283,12 @@ export function edit_recipes_eventlisteners() {
                 return;
             }
 
-            if (!ingredient) return;
+            if (!ingredient) {
+                markIngredientAsInvalid();
+                return;
+            }
 
+            clearIngredientInvalidState();
             clearQuantityInvalidState();
 
             ingredientArray.push({ ingredient, quantity, unit });
@@ -214,6 +296,7 @@ export function edit_recipes_eventlisteners() {
 
             ingredientInput.value = '';
             quantityInput.value = '';
+            clearIngredientInvalidState();
             clearQuantityInvalidState();
         });
     }
