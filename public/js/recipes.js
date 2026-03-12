@@ -1,14 +1,19 @@
 //recipes.js (frontend)
 // Rezepte ins Dashboard laden
-export const loadRecipes = async (category = '', search = '') => {
+const filterSelect = document.getElementById('filter-select');
+const searchInput = document.getElementById('search-input');
+
+export const loadRecipes = async () => {
 
     const list = document.getElementById('recipe-list');
-    
+    const category = filterSelect ? filterSelect.value : '';
+    const search = searchInput ? searchInput.value : '';
 
     try{
-        let url = `/recipes?category=${encodeURIComponent(category)}&search=${encodeURIComponent(search)}`;
-
-        const response = await fetch(url);
+        const params = new URLSearchParams({ category, search });
+        const response = await fetch(`/recipes?${params.toString()}`);
+        
+        if (!response.ok) throw new Error("Fehler beim Laden");
         const recipes = await response.json();
 
         // Den Container leeren, um den Lade-Text zu entfernen
@@ -97,21 +102,13 @@ document.getElementById('recipe-list').addEventListener('click', async (e) => {
     }
 });
 
-const filterSelect = document.getElementById('filter-select');
-const searchInput = document.getElementById('search-input');
-// Funktion, um die aktuellen Werte beider Felder zu sammeln
-const triggerLoad = () => {
-    const category = filterSelect ? filterSelect.value : '';
-    const search = searchInput ? searchInput.value : '';
-    loadRecipes(category, search);
-};
 
 // Suche bei jeder Eingabe auslösen
 if (searchInput) {
-    searchInput.addEventListener('input', triggerLoad);
+    searchInput.addEventListener('input', () => loadRecipes());
 }
 
 // Kategorie-Filter ebenfalls anpassen, damit Suche erhalten bleibt
 if (filterSelect) {
-    filterSelect.addEventListener('change', triggerLoad);
+    filterSelect.addEventListener('change', () => loadRecipes());
 }
