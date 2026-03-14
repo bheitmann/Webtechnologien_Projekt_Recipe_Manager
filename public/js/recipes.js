@@ -1,20 +1,23 @@
 //recipes.js (frontend)
 // Rezepte ins Dashboard laden
-export const loadRecipes = async (category = '', search = '') => {
+const filterSelect = document.getElementById('filter-select');
+const searchInput = document.getElementById('search-input');
+
+export const loadRecipes = async () => {
 
     const list = document.getElementById('recipe-list');
-    
+    const category = filterSelect ? filterSelect.value : '';
+    const search = searchInput ? searchInput.value : '';
 
     try{
-        let url = `/recipes?category=${encodeURIComponent(category)}&search=${encodeURIComponent(search)}`;
-
-        const response = await fetch(url);
+        const params = new URLSearchParams({ category, search });
+        const response = await fetch(`/recipes?${params.toString()}`);
+        
+        if (!response.ok) throw new Error("Fehler beim Laden");
         const recipes = await response.json();
 
-        // Den Container leeren, um den Lade-Text zu entfernen
         list.innerHTML = ''; 
 
-        // Prüfung auf leeren Zustand
         if (recipes.length === 0) {
             // Nachricht anzeigen, wenn keine Rezepte vorhanden sind
             list.innerHTML = `
@@ -28,22 +31,49 @@ export const loadRecipes = async (category = '', search = '') => {
 
 
         recipes.forEach(recipe => {
+
             const article = document.createElement('article');
             const imageSrc = recipe.imageUrl ? recipe.imageUrl : 'https://th.bing.com/th/id/OIP.hYV5XwAJ7YXK0cb2zPOGyAHaHa?w=180&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3';
-            const title = recipe.title ? recipe.title : 'Kein Titel';
-            article.innerHTML = `
-                <div class="recipe-info">
-                    <img src="${imageSrc}" class="recipe-image">
-                    <h3 class="recipe-title">${title}</h3>
-                    <p>Kategorie: ${recipe.category}</p>
-                    <div class="recipe-actions">
-                        <button class="view-btn" data-id="${recipe.id}">Ansehen</button>
-                        <button class="edit-btn" data-id="${recipe.id}">Bearbeiten</button>
-                        <button class="delete-btn" data-id="${recipe.id}">Löschen</button>
-                    </div>
-                </div>
-            `;
-        list.appendChild(article);
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            img.className = 'recipe-image';
+            img.alt = recipe.title;
+
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'recipe-info';
+
+            const h3 = document.createElement('h3');
+            h3.className = 'recipe-title';
+            h3.textContent = recipe.title || 'Kein Titel'; 
+
+            const p = document.createElement('p');
+            p.textContent = `Kategorie: ${recipe.category || 'Nicht angegeben'}`;
+
+
+            const createButton = (label, className, id) => {
+                const btn = document.createElement('button');
+                btn.className = className;
+                btn.textContent = label;
+                btn.setAttribute('data-id', id); 
+                return btn;
+            };
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'recipe-actions';
+            actionsDiv.append(
+                createButton('Ansehen', 'view-btn', recipe.id),
+                createButton('Bearbeiten', 'edit-btn', recipe.id),
+                createButton('Löschen', 'delete-btn', recipe.id)
+                
+            );
+
+
+            infoDiv.append(img, h3, p, actionsDiv);
+            article.append(infoDiv);
+            list.appendChild(article);
+
+
+            
     });
 
     } catch (err) {
@@ -61,7 +91,7 @@ document.getElementById('recipe-list').addEventListener('click', async (e) => {
     if (e.target.classList.contains('delete-btn')) {
         if (confirm('Rezept wirklich löschen?')) {
             const res = await fetch(`/recipes/${id}`, { method: 'DELETE' });
-            if (res.ok) loadRecipes(); // Nach Löschen Liste erneuern
+            if (res.ok) loadRecipes(); 
         }
     }
 
@@ -70,21 +100,12 @@ document.getElementById('recipe-list').addEventListener('click', async (e) => {
     }
 });
 
-const filterSelect = document.getElementById('filter-select');
-const searchInput = document.getElementById('search-input');
-// Funktion, um die aktuellen Werte beider Felder zu sammeln
-const triggerLoad = () => {
-    const category = filterSelect ? filterSelect.value : '';
-    const search = searchInput ? searchInput.value : '';
-    loadRecipes(category, search);
-};
 
-// Suche bei jeder Eingabe auslösen
+
 if (searchInput) {
-    searchInput.addEventListener('input', triggerLoad);
+    searchInput.addEventListener('input', () => loadRecipes());
 }
 
-// Kategorie-Filter ebenfalls anpassen, damit Suche erhalten bleibt
 if (filterSelect) {
-    filterSelect.addEventListener('change', triggerLoad);
+    filterSelect.addEventListener('change', () => loadRecipes());
 }
