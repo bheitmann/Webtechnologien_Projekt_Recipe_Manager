@@ -65,7 +65,7 @@ async function loadUsers() {
                 li.style = 'display: flex; justify-content: space-between; margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;';
                 
                 li.innerHTML = `
-                    <span><strong>${user.username}</strong> (Rolle: ${user.role})</span>
+                    <span style="text-overflow: ellipsis; overflow: hidden"><strong>${user.username}</strong> (Rolle: ${user.role})</span>
                     <button class="delete-user-btn" data-id="${user.id}">Löschen</button>
                 `;
                 list.appendChild(li);
